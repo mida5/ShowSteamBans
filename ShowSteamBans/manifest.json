@@ -1,0 +1,20 @@
+{
+	"manifest_version" : 2,
+	"name": "Show Steam Bans",
+	"version": "0.1",
+	"description": "Show Steam Bans",
+	"icons": { "256" : "images/steam.png" },
+	"content_scripts": [
+	{
+		"js": [ "scripts/jquery.min.js", "scripts/content.js" ],
+		"css": [ "styles/content.css" ],
+		"run_at": "document_end",
+		"matches": [ "*://steamcommunity.com/*/friends/*" ]
+		//"matches": [ "<all_urls>" ]
+	}],
+
+    "permissions": [
+        "*://steamcommunity.com/*/friends/*"
+		//"<all_urls>"
+    ]
+}

@@ -1,11 +1,10 @@
-﻿Number.prototype.clamp = function(min, max) { return Math.min(Math.max(this, min), max);
+Number.prototype.clamp = function(min, max) { return Math.min(Math.max(this, min), max);
 };
 Object.defineProperty(Array.prototype, 'chunk', {
     value: function(chunkSize)
 	{
-        var that = this;
-        return Array(Math.ceil(that.length/chunkSize)).fill().map(function(_,i){ return that.slice(i * chunkSize, i * chunkSize + chunkSize);
-        });
+        var arr = this;
+        return Array(Math.ceil(arr.length / chunkSize)).fill().map( (_,i) => arr.slice(i * chunkSize, i * chunkSize + chunkSize) );
     }
 });
 
@@ -15,36 +14,36 @@ var list = {};
 document.querySelectorAll('.persona').forEach(persona => { list[persona.dataset.steamid] = persona; });//console.log( persona );
 //console.log( list );
 
-Object.keys(list).chunk(20).forEach(getReult);
+// split by chunks, url will be too long
+Object.keys(list).chunk(20).forEach(getResult);
 
-function getReult(idsArr)
+function getResult(idsArr)
 {
-	//var ids = Object.keys(idsArr).join(',');
-	var ids = idsArr.join(',');//
+	var ids = idsArr.join(',');
 	var url = `https://api.steampowered.com/ISteamUser/GetPlayerBans/v1/?key=${apikey}&steamids=${ids}`;
 
-	fetch(url).then(res =>
+	fetch(url).then(result =>
 	{
-		if (res.ok)
-			return res.json();
+		if (result.ok)
+			return result.json();
 
-		throw Error(`Code ${res.status}. ${res.statusText}`);
+		throw Error(`Code ${result.status}. ${result.statusText}`);
 
-	}).then(json => json.players.forEach(colorProfile));
+	}).then(json => json.players.forEach(colorPersona));
 }
 
-function colorProfile(player)
+function colorPersona(player)
 {
-	var playerElem = $( list[player.SteamId] );
+	var personaElem = $( list[player.SteamId] );
 	// colder in 1 month
 	var n = (1 - player.DaysSinceLastBan / 30).clamp(0, 1);
 	var c = (64 + n * 192) >> 0;
 
 	if(player.VACBanned)
-		//playerElem.addClass( "VACBanned" );
-		playerElem.css("background-color", `rgb(${c},0,0)`);
+		//personaElem.addClass( "VACBanned" );
+		personaElem.css("background-color", `rgb(${c},0,0)`);
 
 	if(player.NumberOfGameBans > 0)
-		//playerElem.addClass( "GameBan" );
-		playerElem.css("background-color", `rgb(${c},${c},0)`);
+		//personaElem.addClass( "GameBan" );
+		personaElem.css("background-color", `rgb(${c},${c},0)`);
 }

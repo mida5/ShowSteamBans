@@ -1,9 +1,10 @@
 {
 	"manifest_version" : 2,
 	"name": "Show Steam Bans",
-	"version": "0.1",
+	"version": "0.2",
 	"description": "Show Steam Bans",
 	"icons": { "256" : "images/steam.png" },
+	"background":{ "scripts":[ "scripts/jquery.min.js", "scripts/background.js" ] },
 	"content_scripts": [
 	{
 		"js": [ "scripts/jquery.min.js", "scripts/content.js" ],
@@ -14,7 +15,8 @@
 	}],
 
     "permissions": [
-        "*://steamcommunity.com/*/friends/*"
+        "*://steamcommunity.com/*/friends/*",
+        "*://*.steampowered.com/*"
 		//"<all_urls>"
     ]
 }
